@@ -23,13 +23,13 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDto> getAllCities() {
         return cityRepository.findAll().stream()
-                .map(city -> cityMapper.convertToCityDto(city.getId(), city))
+                .map(cityMapper::convertToCityDto)
                 .toList();
     }
 
     @Override
     public CityDto getCity(Long id) {
-        return cityMapper.convertToCityDto(id, cityRepository.findById(id).orElseThrow(NotFoundException::new));
+        return cityMapper.convertToCityDto(cityRepository.findById(id).orElseThrow(NotFoundException::new));
     }
 
     @Override
@@ -43,7 +43,7 @@ public class CityServiceImpl implements CityService {
         CityDto cityDto = getCity(id);
         if (cityDto != null) {
             BeanUtils.copyProperties(updatedCity, cityDto, getIgnoreProperties(updatedCity, "id"));
-            cityRepository.save(cityMapper.convertToCity(id, cityDto));
+            cityRepository.save(cityMapper.convertToCity(cityDto));
         }
     }
 
@@ -51,7 +51,9 @@ public class CityServiceImpl implements CityService {
     public void deleteCity(Long id) {
         CityDto cityDto = getCity(id);
         if (cityDto != null) {
-            cityRepository.delete(cityMapper.convertToCity(id, cityDto));
+            City city = cityMapper.convertToCity(cityDto);
+            city.setId(id);
+            cityRepository.delete(city);
         }
     }
 }

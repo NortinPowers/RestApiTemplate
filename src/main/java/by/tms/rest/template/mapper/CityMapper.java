@@ -8,11 +8,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface CityMapper {
 
-    CityDto convertToCityDto(Long id, City city);
+    CityDto convertToCityDto(City city);
 
     @Mapping(target = "id", ignore = true)
     City convertToCity(CityDto cityDto);
-
-    @Mapping(target = "id", ignore = true)
-    City convertToCity(Long id, CityDto cityDto);
 }
