@@ -218,9 +218,7 @@
                 <artifactId>spotbugs-maven-plugin</artifactId>
                 <version>4.7.3.2</version>
                 <configuration>
-                    <!--Low/Max-->
                     <effort>Max</effort>
-                    <!--Low/Medium/Max-->
                     <threshold>Medium</threshold>
                     <excludeFilterFile>${basedir}/config/spotbugs/spotbugs-exclude.xml</excludeFilterFile>
                     <maxHeap>1024</maxHeap>
