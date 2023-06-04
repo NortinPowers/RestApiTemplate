@@ -10,7 +10,11 @@ import org.springframework.beans.BeanWrapperImpl;
 @UtilityClass
 public class ObjectHandlerUtils {
 
-    public static String[] getNullPropertyNames(Object source) {
+    public static <T> String[] getIgnoreProperties(T t, String... customProperties) {
+        return concatWithArrayCopy(getNullPropertyNames(t), customProperties);
+    }
+
+    private String[] getNullPropertyNames(Object source) {
         final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
         return Stream.of(wrappedSource.getPropertyDescriptors())
                 .map(FeatureDescriptor::getName)
@@ -18,11 +22,7 @@ public class ObjectHandlerUtils {
                 .toArray(String[]::new);
     }
 
-    public static <T> String[] getIgnoreProperties(T t, String... customProperties) {
-        return concatWithArrayCopy(getNullPropertyNames(t), customProperties);
-    }
-
-    public static <T> T[] concatWithArrayCopy(T[] firstArray, T[] secondArray) {
+    private <T> T[] concatWithArrayCopy(T[] firstArray, T[] secondArray) {
         T[] result = Arrays.copyOf(firstArray, firstArray.length + secondArray.length);
         System.arraycopy(secondArray, 0, result, firstArray.length, secondArray.length);
         return result;
