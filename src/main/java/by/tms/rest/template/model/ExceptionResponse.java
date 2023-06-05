@@ -8,7 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ExceptionResponse extends CustomApiResponse implements ResponseAble {
+public class ExceptionResponse extends BaseResponse {
 
     @Schema(description = "Message describing the exception", example = "Some message")
     private String message;

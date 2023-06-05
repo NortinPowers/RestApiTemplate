@@ -6,5 +6,4 @@ import lombok.experimental.UtilityClass;
 public class Constants {
 
     public static final String CITY_NAMES_VALIDATION_PATTERN = "[A-Za-z\\s]{1,40}";
-
 }

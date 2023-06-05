@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ErrorValidationResponse extends CustomApiResponse implements ResponseAble {
+public class ErrorValidationResponse extends BaseResponse {
 
     @Schema(description = "List of validation errors", type = "array", example = "[\"The 'name' field is required\", \"Some validation error\"]")
     private List<String> errors;

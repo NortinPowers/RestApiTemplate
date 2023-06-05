@@ -36,7 +36,7 @@ public class ResponseUtils {
 
     public static List<String> getErrorValidationMessages(MethodArgumentNotValidException exception) {
         return exception.getAllErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                .collect(Collectors.toList());
+                        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                        .collect(Collectors.toList());
     }
 }

@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MessageResponse extends CustomApiResponse implements ResponseAble {
+public class MessageResponse extends BaseResponse {
 
     @Schema(description = "A message describing the completed request", example = "Some message")
     private String message;
