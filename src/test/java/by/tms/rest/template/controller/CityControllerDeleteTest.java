@@ -17,22 +17,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @AutoConfigureMockMvc
 class CityControllerDeleteTest {
 
-    public static final String CITY = "city";
+    private static final String CITY = "city";
 
     @Autowired
     private MockMvc mockMvc;
 
     @Test
     void delete() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/city/4"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/city/4"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("message").value(String.format(DELETION_MESSAGE, CITY)));
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/city/40"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/city/40"))
                     .andDo(print())
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/cities/4"))
+        mockMvc.perform(MockMvcRequestBuilders.delete("/cities/4"))
                     .andDo(print())
                     .andExpect(status().isNotFound());
     }

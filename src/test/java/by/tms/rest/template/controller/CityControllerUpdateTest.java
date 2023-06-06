@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class CityControllerUpdateTest {
 
-    public static final String CITY = "city";
+    private static final String CITY = "city";
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,13 +33,13 @@ class CityControllerUpdateTest {
                 "info" : "is the capital of Great Britain"
                 }
                 """;
-        this.mockMvc.perform(patch("/city/1")
+        mockMvc.perform(patch("/city/1")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBody))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("message").value(String.format(UPDATE_MESSAGE, CITY)));
-        this.mockMvc.perform(patch("/city/2")
+        mockMvc.perform(patch("/city/2")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBody))
                     .andDo(print())
@@ -51,7 +51,7 @@ class CityControllerUpdateTest {
                 "name" : "Berlin"
                 }
                 """;
-        this.mockMvc.perform(patch("/city/1")
+        mockMvc.perform(patch("/city/1")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyNoInfo))
                     .andDo(print())
@@ -62,7 +62,7 @@ class CityControllerUpdateTest {
                 "info" : "capital and largest city of Germany"
                 }
                 """;
-        this.mockMvc.perform(patch("/city/1")
+        mockMvc.perform(patch("/city/1")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyNoName))
                     .andDo(print())
@@ -74,7 +74,7 @@ class CityControllerUpdateTest {
                 "info" : "former Constantinople, ancient Byzantium, the largest city and the main seaport of Turkey"
                 }
                 """;
-        this.mockMvc.perform(patch("/city/1")
+        mockMvc.perform(patch("/city/1")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyInvalidField))
                     .andDo(print())
@@ -87,14 +87,14 @@ class CityControllerUpdateTest {
                 "color" : "red"
                 }
                 """;
-        this.mockMvc.perform(patch("/city/2")
+        mockMvc.perform(patch("/city/2")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyUnnecessaryField))
                     .andDo(print())
                     .andExpect(status().isInternalServerError())
                     .andExpect(jsonPath("message").value(HTTP_NOT_READABLE_EXCEPTION_MESSAGE))
                     .andExpect(jsonPath("type").value("HttpMessageNotReadableException"));
-        this.mockMvc.perform(patch("/cities/1"))
+        mockMvc.perform(patch("/cities/1"))
                     .andDo(print())
                     .andExpect(status().isNotFound());
     }

@@ -40,10 +40,11 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void updateCity(Long id, CityDto updatedCity) {
+    public void updateCity(Long id, CityDto updatedCityDto) {
         Optional<City> cityOptional = cityRepository.findById(id);
         if (cityOptional.isPresent()) {
             City city = cityOptional.get();
+            City updatedCity = cityMapper.convertToCity(updatedCityDto);
             BeanUtils.copyProperties(updatedCity, city, getIgnoreProperties(updatedCity, "id"));
             cityRepository.save(city);
         } else {

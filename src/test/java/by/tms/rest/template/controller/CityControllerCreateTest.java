@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class CityControllerCreateTest {
 
-    public static final String CITY = "city";
+    private static final String CITY = "city";
 
     @Autowired
     private MockMvc mockMvc;
@@ -33,13 +33,13 @@ class CityControllerCreateTest {
                 "info" : "is the capital of Great Britain"
                 }
                 """;
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBody))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("message").value(String.format(CREATION_MESSAGE, CITY)));
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBody))
                     .andDo(print())
@@ -51,7 +51,7 @@ class CityControllerCreateTest {
                 "info" : "capital and largest city of Germany"
                 }
                 """;
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyNoName))
                     .andDo(print())
@@ -62,13 +62,13 @@ class CityControllerCreateTest {
                 "name" : "Berlin"
                 }
                 """;
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyNoInfo))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("message").value(String.format(CREATION_MESSAGE, CITY)));
-        this.mockMvc.perform(post("/cities"))
+        mockMvc.perform(post("/cities"))
                     .andDo(print())
                     .andExpect(status().isNotFound());
         String requestBodyInvalidField = """
@@ -77,7 +77,7 @@ class CityControllerCreateTest {
                 "info" : "former Constantinople, ancient Byzantium, the largest city and the main seaport of Turkey"
                 }
                 """;
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyInvalidField))
                     .andDo(print())
@@ -90,7 +90,7 @@ class CityControllerCreateTest {
                 "color" : "red"
                 }
                 """;
-        this.mockMvc.perform(post("/city")
+        mockMvc.perform(post("/city")
                                      .contentType(APPLICATION_JSON)
                                      .content(requestBodyUnnecessaryField))
                     .andDo(print())

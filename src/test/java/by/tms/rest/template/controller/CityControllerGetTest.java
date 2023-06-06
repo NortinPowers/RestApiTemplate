@@ -22,12 +22,15 @@ class CityControllerGetTest {
 
     @Test
     void getAll() throws Exception {
-        this.mockMvc.perform(get("/city"))
+        mockMvc.perform(get("/city"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(
-                            "[{\"id\":1,\"name\":\"Minsk\",\"info\":\"is the capital and the largest city of Belarus, located on the Svislach and the now subterranean Niamiha rivers.\"},{\"id\":2,\"name\":\"New York\",\"info\":\"is the most populous city in the United States.\"},{\"id\":3,\"name\":\"Warsaw\",\"info\":\"is the capital and largest city of Poland.\"},{\"id\":4,\"name\":\"Boston\",\"info\":null}]"));
-        this.mockMvc.perform(get("/cities"))
+                            "[{\"id\":1,\"name\":\"Minsk\",\"info\":\"is the capital and the largest city of Belarus, located on the Svislach and the now subterranean Niamiha rivers.\"},"
+                                    + "{\"id\":2,\"name\":\"New York\",\"info\":\"is the most populous city in the United States.\"},"
+                                    + "{\"id\":3,\"name\":\"Warsaw\",\"info\":\"is the capital and largest city of Poland.\"},"
+                                    + "{\"id\":4,\"name\":\"Boston\",\"info\":null}]"));
+        mockMvc.perform(get("/cities"))
                     .andDo(print())
                     .andExpect(status().isNotFound());
     }
@@ -41,15 +44,15 @@ class CityControllerGetTest {
                 "info" : "is the capital and the largest city of Belarus, located on the Svislach and the now subterranean Niamiha rivers."
                 }
                 """;
-        this.mockMvc.perform(get("/city/1"))
+        mockMvc.perform(get("/city/1"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(content().json(response));
-        this.mockMvc.perform(get("/city/40"))
+        mockMvc.perform(get("/city/40"))
                     .andDo(print())
                     .andExpect(status().isNotFound())
                     .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
-        this.mockMvc.perform(get("/cities/1"))
+        mockMvc.perform(get("/cities/1"))
                     .andDo(print())
                     .andExpect(status().isNotFound());
     }
