@@ -29,14 +29,14 @@ public class ResponseUtils {
         return new ExceptionResponse(message, exception.getClass().getSimpleName());
     }
 
-    private static <T> String getClassName(T t) {
-        String className = t.getClass().getSimpleName().toLowerCase();
-        return className.substring(0, className.length() - 3);
-    }
-
     public static List<String> getErrorValidationMessages(MethodArgumentNotValidException exception) {
         return exception.getAllErrors().stream()
                         .map(DefaultMessageSourceResolvable::getDefaultMessage)
                         .collect(Collectors.toList());
+    }
+
+    private <T> String getClassName(T t) {
+        String className = t.getClass().getSimpleName().toLowerCase();
+        return className.substring(0, className.length() - 3);
     }
 }
