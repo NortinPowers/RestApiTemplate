@@ -22,7 +22,7 @@ public class ResponseUtils {
     public static final String METHOD_ARGUMENT_NOT_VALID_EXCEPTION_MESSAGE = "The transmitted data did not pass verification";
 
     public static <T> MessageResponse getSuccessResponse(String message, T t) {
-        return new MessageResponse(String.format(message, getClassName(t)), t);
+        return new MessageResponse(String.format(message, getClassName(t).toLowerCase()), t);
     }
 
     public static ExceptionResponse getExceptionResponse(String message, Exception exception) {
@@ -36,7 +36,7 @@ public class ResponseUtils {
     }
 
     private <T> String getClassName(T t) {
-        String className = t.getClass().getSimpleName().toLowerCase();
+        String className = t.getClass().getSimpleName();
         return className.substring(0, className.length() - 3);
     }
 }
