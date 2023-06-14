@@ -1,6 +1,5 @@
 package by.tms.rest.template;
 
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 import by.tms.rest.template.controller.CityController;
@@ -9,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RestTemplateApplicationTests {
+class RestTemplateApplicationTest {
 
     @Autowired
     private CityController cityController;
