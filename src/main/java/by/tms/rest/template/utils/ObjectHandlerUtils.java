@@ -17,9 +17,9 @@ public class ObjectHandlerUtils {
     private String[] getNullPropertyNames(Object source) {
         final BeanWrapper wrappedSource = new BeanWrapperImpl(source);
         return Stream.of(wrappedSource.getPropertyDescriptors())
-                .map(FeatureDescriptor::getName)
-                .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
-                .toArray(String[]::new);
+                     .map(FeatureDescriptor::getName)
+                     .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
+                     .toArray(String[]::new);
     }
 
     private <T> T[] concatWithArrayCopy(T[] firstArray, T[] secondArray) {

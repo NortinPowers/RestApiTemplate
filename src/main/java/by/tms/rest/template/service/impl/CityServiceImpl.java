@@ -9,6 +9,7 @@ import by.tms.rest.template.mapper.CityMapper;
 import by.tms.rest.template.repository.CityRepository;
 import by.tms.rest.template.service.CityService;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,8 @@ public class CityServiceImpl implements CityService {
     @Override
     public List<CityDto> getAllCities() {
         return cityRepository.findAll().stream()
-                .map(cityMapper::convertToCityDto)
-                .toList();
+                             .map(cityMapper::convertToCityDto)
+                             .toList();
     }
 
     @Override
@@ -39,21 +40,25 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void updateCity(Long id, CityDto updatedCity) {
-        CityDto cityDto = getCity(id);
-        if (cityDto != null) {
-            BeanUtils.copyProperties(updatedCity, cityDto, getIgnoreProperties(updatedCity, "id"));
-            cityRepository.save(cityMapper.convertToCity(cityDto));
+    public void updateCity(Long id, CityDto updatedCityDto) {
+        Optional<City> cityOptional = cityRepository.findById(id);
+        if (cityOptional.isPresent()) {
+            City city = cityOptional.get();
+            City updatedCity = cityMapper.convertToCity(updatedCityDto);
+            BeanUtils.copyProperties(updatedCity, city, getIgnoreProperties(updatedCity, "id"));
+            cityRepository.save(city);
+        } else {
+            throw new NotFoundException();
         }
     }
 
     @Override
     public void deleteCity(Long id) {
-        CityDto cityDto = getCity(id);
-        if (cityDto != null) {
-            City city = cityMapper.convertToCity(cityDto);
-            city.setId(id);
-            cityRepository.delete(city);
+        Optional<City> city = cityRepository.findById(id);
+        if (city.isPresent()) {
+            cityRepository.delete(city.get());
+        } else {
+            throw new NotFoundException();
         }
     }
 }
