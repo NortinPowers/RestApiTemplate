@@ -1,5 +1,6 @@
 package by.tms.rest.template.controller;
 
+import static by.tms.rest.template.constant.TestConstant.ERRORS;
 import static by.tms.rest.template.utils.ResponseUtils.DATA_INTEGRITY_VIOLATION_EXCEPTION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.HTTP_NOT_READABLE_EXCEPTION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.UPDATE_MESSAGE;
@@ -67,7 +68,7 @@ class CityControllerUpdateTest {
                                      .content(requestBodyNoName))
                     .andDo(print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().json("{\"errors\":[\"The 'name' field is required\"],\"type\":\"The transmitted data did not pass verification\"}"));
+                    .andExpect(content().json(ERRORS));
         String requestBodyInvalidField = """
                 {
                 "names" : "Istanbul",
@@ -79,7 +80,7 @@ class CityControllerUpdateTest {
                                      .content(requestBodyInvalidField))
                     .andDo(print())
                     .andExpect(status().isBadRequest())
-                    .andExpect(content().json("{\"errors\":[\"The 'name' field is required\"],\"type\":\"The transmitted data did not pass verification\"}"));
+                    .andExpect(content().json(ERRORS));
         String requestBodyUnnecessaryField = """
                 {
                 "name" : "Istanbul",
