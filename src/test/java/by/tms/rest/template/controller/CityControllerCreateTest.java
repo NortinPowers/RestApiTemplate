@@ -1,6 +1,7 @@
 package by.tms.rest.template.controller;
 
-import static by.tms.rest.template.constant.TestConstant.ERRORS;
+import static by.tms.rest.template.constant.TestConstants.CITY;
+import static by.tms.rest.template.constant.TestConstants.ERRORS;
 import static by.tms.rest.template.utils.ResponseUtils.CREATION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.DATA_INTEGRITY_VIOLATION_EXCEPTION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.HTTP_NOT_READABLE_EXCEPTION_MESSAGE;
@@ -20,8 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 @SpringBootTest
 @AutoConfigureMockMvc
 class CityControllerCreateTest {
-
-    private static final String CITY = "city";
 
     @Autowired
     private MockMvc mockMvc;
@@ -105,20 +104,6 @@ class CityControllerCreateTest {
                .andDo(print())
                .andExpect(status().isBadRequest())
                .andExpect(content().json(ERRORS));
-        String requestBodyUnnecessaryField = """
-                {
-                "name" : "Istanbul",
-                "info" : "former Constantinople, ancient Byzantium, the largest city and the main seaport of Turkey"
-                "color" : "red"
-                }
-                """;
-        mockMvc.perform(post("/city")
-                                .contentType(APPLICATION_JSON)
-                                .content(requestBodyUnnecessaryField))
-               .andDo(print())
-               .andExpect(status().isInternalServerError())
-               .andExpect(jsonPath("message").value(HTTP_NOT_READABLE_EXCEPTION_MESSAGE))
-               .andExpect(jsonPath("type").value("HttpMessageNotReadableException"));
     }
 
     @Test

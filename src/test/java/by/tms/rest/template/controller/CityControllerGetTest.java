@@ -21,22 +21,26 @@ class CityControllerGetTest {
     private MockMvc mockMvc;
 
     @Test
-    void getAll() throws Exception {
+    void getAllPositive() throws Exception {
         mockMvc.perform(get("/city"))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(
-                            "[{\"id\":1,\"name\":\"Minsk\",\"info\":\"is the capital and the largest city of Belarus, located on the Svislach and the now subterranean Niamiha rivers.\"},"
-                                    + "{\"id\":2,\"name\":\"New York\",\"info\":\"is the most populous city in the United States.\"},"
-                                    + "{\"id\":3,\"name\":\"Warsaw\",\"info\":\"is the capital and largest city of Poland.\"},"
-                                    + "{\"id\":4,\"name\":\"Boston\",\"info\":null}]"));
-        mockMvc.perform(get("/cities"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound());
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(content().json(
+                       "[{\"id\":1,\"name\":\"Minsk\",\"info\":\"is the capital and the largest city of Belarus, located on the Svislach and the now subterranean Niamiha rivers.\"},"
+                               + "{\"id\":2,\"name\":\"New York\",\"info\":\"is the most populous city in the United States.\"},"
+                               + "{\"id\":3,\"name\":\"Warsaw\",\"info\":\"is the capital and largest city of Poland.\"},"
+                               + "{\"id\":4,\"name\":\"Boston\",\"info\":null}]"));
     }
 
     @Test
-    void getOne() throws Exception {
+    void getAllNegative() throws Exception {
+        mockMvc.perform(get("/cities"))
+               .andDo(print())
+               .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void getOnePositive() throws Exception {
         String response = """
                 {
                 "id" : 1,
@@ -45,15 +49,23 @@ class CityControllerGetTest {
                 }
                 """;
         mockMvc.perform(get("/city/1"))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(content().json(response));
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(content().json(response));
+    }
+
+    @Test
+    void getOneNegativeNotFound() throws Exception {
         mockMvc.perform(get("/city/40"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
+               .andDo(print())
+               .andExpect(status().isNotFound())
+               .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
+    }
+
+    @Test
+    void getOneNegativeIncorrectPath() throws Exception {
         mockMvc.perform(get("/cities/1"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound());
+               .andDo(print())
+               .andExpect(status().isNotFound());
     }
 }

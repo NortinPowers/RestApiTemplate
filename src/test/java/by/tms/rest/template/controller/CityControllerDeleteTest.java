@@ -1,5 +1,6 @@
 package by.tms.rest.template.controller;
 
+import static by.tms.rest.template.constant.TestConstants.CITY;
 import static by.tms.rest.template.utils.ResponseUtils.DELETION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.NOT_FOUND_EXCEPTION_MESSAGE;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -16,8 +17,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 @SpringBootTest
 @AutoConfigureMockMvc
 class CityControllerDeleteTest {
-
-    private static final String CITY = "city";
 
     @Autowired
     private MockMvc mockMvc;

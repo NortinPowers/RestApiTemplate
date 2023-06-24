@@ -1,6 +1,7 @@
 package by.tms.rest.template.controller;
 
-import static by.tms.rest.template.constant.TestConstant.ERRORS;
+import static by.tms.rest.template.constant.TestConstants.CITY;
+import static by.tms.rest.template.constant.TestConstants.ERRORS;
 import static by.tms.rest.template.utils.ResponseUtils.DATA_INTEGRITY_VIOLATION_EXCEPTION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.HTTP_NOT_READABLE_EXCEPTION_MESSAGE;
 import static by.tms.rest.template.utils.ResponseUtils.UPDATE_MESSAGE;
@@ -21,13 +22,11 @@ import org.springframework.test.web.servlet.MockMvc;
 @AutoConfigureMockMvc
 class CityControllerUpdateTest {
 
-    private static final String CITY = "city";
-
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void update() throws Exception {
+    void updatePositive() throws Exception {
         String requestBody = """
                 {
                 "name" : "London",
@@ -35,40 +34,64 @@ class CityControllerUpdateTest {
                 }
                 """;
         mockMvc.perform(patch("/city/1")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBody))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("message").value(String.format(UPDATE_MESSAGE, CITY)));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBody))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("message").value(String.format(UPDATE_MESSAGE, CITY)));
+
+    }
+
+    @Test
+    void updateNegativeDataException() throws Exception {
+        String requestBody = """
+            {
+            "name" : "Warsaw",
+            "info" : "is the capital and largest city of Poland."
+            }
+            """;
         mockMvc.perform(patch("/city/2")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBody))
-                    .andDo(print())
-                    .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("message").value(DATA_INTEGRITY_VIOLATION_EXCEPTION_MESSAGE))
-                    .andExpect(jsonPath("type").value("DataIntegrityViolationException"));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBody))
+               .andDo(print())
+               .andExpect(status().isInternalServerError())
+               .andExpect(jsonPath("message").value(DATA_INTEGRITY_VIOLATION_EXCEPTION_MESSAGE))
+               .andExpect(jsonPath("type").value("DataIntegrityViolationException"));
+
+    }
+
+    @Test
+    void updatePositiveNoInfo() throws Exception {
         String requestBodyNoInfo = """
                 {
                 "name" : "Berlin"
                 }
                 """;
         mockMvc.perform(patch("/city/1")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBodyNoInfo))
-                    .andDo(print())
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("message").value(String.format(UPDATE_MESSAGE, CITY)));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBodyNoInfo))
+               .andDo(print())
+               .andExpect(status().isOk())
+               .andExpect(jsonPath("message").value(String.format(UPDATE_MESSAGE, CITY)));
+    }
+
+    @Test
+    void updateNegativeValidatorException() throws Exception {
         String requestBodyNoName = """
                 {
                 "info" : "capital and largest city of Germany"
                 }
                 """;
         mockMvc.perform(patch("/city/1")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBodyNoName))
-                    .andDo(print())
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(ERRORS));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBodyNoName))
+               .andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().json(ERRORS));
+    }
+
+    @Test
+    void updateNegativeIncorrectDataFieldName() throws Exception {
         String requestBodyInvalidField = """
                 {
                 "names" : "Istanbul",
@@ -76,11 +99,15 @@ class CityControllerUpdateTest {
                 }
                 """;
         mockMvc.perform(patch("/city/1")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBodyInvalidField))
-                    .andDo(print())
-                    .andExpect(status().isBadRequest())
-                    .andExpect(content().json(ERRORS));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBodyInvalidField))
+               .andDo(print())
+               .andExpect(status().isBadRequest())
+               .andExpect(content().json(ERRORS));
+    }
+
+    @Test
+    void updateNegativeIncorrectField() throws Exception {
         String requestBodyUnnecessaryField = """
                 {
                 "name" : "Istanbul",
@@ -89,14 +116,18 @@ class CityControllerUpdateTest {
                 }
                 """;
         mockMvc.perform(patch("/city/2")
-                                     .contentType(APPLICATION_JSON)
-                                     .content(requestBodyUnnecessaryField))
-                    .andDo(print())
-                    .andExpect(status().isInternalServerError())
-                    .andExpect(jsonPath("message").value(HTTP_NOT_READABLE_EXCEPTION_MESSAGE))
-                    .andExpect(jsonPath("type").value("HttpMessageNotReadableException"));
+                                .contentType(APPLICATION_JSON)
+                                .content(requestBodyUnnecessaryField))
+               .andDo(print())
+               .andExpect(status().isInternalServerError())
+               .andExpect(jsonPath("message").value(HTTP_NOT_READABLE_EXCEPTION_MESSAGE))
+               .andExpect(jsonPath("type").value("HttpMessageNotReadableException"));
+    }
+
+    @Test
+    void updateNegativeIncorrectPath() throws Exception {
         mockMvc.perform(patch("/cities/1"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound());
+               .andDo(print())
+               .andExpect(status().isNotFound());
     }
 }
