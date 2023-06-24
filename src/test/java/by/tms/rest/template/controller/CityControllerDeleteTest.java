@@ -23,17 +23,25 @@ class CityControllerDeleteTest {
     private MockMvc mockMvc;
 
     @Test
-    void delete() throws Exception {
+    void deletePositive() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/city/4"))
                     .andDo(print())
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("message").value(String.format(DELETION_MESSAGE, CITY)));
+    }
+
+    @Test
+    void deleteNegativeNotFound() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/city/40"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound())
-                    .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
+               .andDo(print())
+               .andExpect(status().isNotFound())
+               .andExpect(jsonPath("message").value(NOT_FOUND_EXCEPTION_MESSAGE));
+    }
+
+    @Test
+    void deleteNegativeIncorrectPath() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/cities/4"))
-                    .andDo(print())
-                    .andExpect(status().isNotFound());
+               .andDo(print())
+               .andExpect(status().isNotFound());
     }
 }
