@@ -10,5 +10,5 @@
 <h4>Target:</h4>
 <p>Write a rest service that you can save and use as your own template</p>
 
-Contact:
+<h4>Contact:</h4>
 a.nortin@gmail.com
